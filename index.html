@@ -8,8 +8,27 @@
     <title>PuppyBowl</title>
   </head>
   <body>
-    <form id="new-player-form"></form>
-    <main></main>
+    <form id="new-player-form">
+      <label>
+        Puppy Name
+        <input type="text" name="title" placeholder="Puppy Name" />
+      </label>
+      <label>
+        Puppy Breed
+        <input type="text" name="breed" placeholder="Puppy Breed" />
+      </label>
+      Is Your Puppy on the Field?
+      <input type="checkbox" id="field" name="field" value="field" />
+      <label for="field"></label><br />
+      <label>
+        Puppy Image
+        <input type="url" name="image" placeholder="Image URL" />
+      </label>
+      <button>Add Puppy</button>
+    </form>
+    <main>
+      <ul id="players"></ul>
+    </main>
     <script src="./script.js"></script>
   </body>
 </html>
