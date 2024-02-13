@@ -3,6 +3,8 @@
 const cohortName = "2401-GHP-ET-WEB-FT-SF";
 const API_URL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}`;
 
+const addPlayerForm = document.querySelector("#new-player-form");
+
 /**
  * Fetches all players from the API.
  * @returns {Object[]} the array of player objects
@@ -43,33 +45,37 @@ const fetchSinglePlayer = async (playerId) => {
  */
 // TODO
 // DONE
+
 const addNewPlayer = async (playerObj) => {
+  console.log("I am adding");
   playerObj.preventDefault();
-  const addPlayerForm = document.querySelector("#new-player-form");
 
   const name = addPlayerForm.title.value;
   const breed = addPlayerForm.breed.value;
   let field = addPlayerForm.field.checked; //boolean
-  const image = addPlayerForm.image.value;
+  // let teamId = addPlayerForm.teamId.value;
+  const imageUrl = addPlayerForm.imageUrl.value;
+  // console.log(teamId);
   if (field) {
     field = "field";
   } else {
     field = "bench";
   }
   try {
+    console.log("i am trying");
     const response = await fetch(API_URL + "/players", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, breed, field, image }),
+      body: JSON.stringify({ name, breed, field, imageUrl }),
     });
     const json = await response.json();
     init();
   } catch (err) {
     console.error("Oops, something went wrong with adding that player!", err);
   }
-
-  addPlayerForm.addEventListener("submit", addNewPlayer);
 };
+
+addPlayerForm.addEventListener("submit", addNewPlayer);
 
 /**
  * Removes a player from the roster via the API.
@@ -126,7 +132,18 @@ const renderAllPlayers = (playerList) => {
       newHeading.textContent = playerObj.name;
 
       const newId = document.createElement("p");
-      newId.textContent = playerObj.id;
+      newId.textContent = `Player ID is ${playerObj.id}`;
+
+      const newTeam = document.createElement("p");
+      if (playerObj.teamId === null) {
+        newTeam.textContent = `Player team is unknown.`;
+      } else {
+        newTeam.textContent = `Player team is ${playerObj.teamId}`;
+      }
+
+      const newImage = document.createElement("img");
+      newImage.src = playerObj.imageUrl;
+      newImage.style = "max-width: 450px; max-height: 300px";
 
       const seeDetailsButton = document.createElement("button");
       seeDetailsButton.textContent = "See Details";
@@ -143,6 +160,8 @@ const renderAllPlayers = (playerList) => {
       newListItem.append(
         newHeading,
         newId,
+        newTeam,
+        newImage,
         seeDetailsButton,
         removeFromRosterButton
       );
@@ -168,6 +187,7 @@ const renderAllPlayers = (playerList) => {
 const renderSinglePlayer = (player) => {
   // TODO
   // player = player object
+
   const playerDisplay = document.querySelector("#players");
 
   playerDisplay.replaceChildren();
@@ -179,27 +199,88 @@ const renderSinglePlayer = (player) => {
   newHeading.textContent = player.name;
 
   const newId = document.createElement("p");
-  newId.textContent = player.id;
+  if (player.teamId === null) {
+    newId.textContent = `Player team is unknown.`;
+  } else {
+    newId.textContent = `Player team is ${player.teamId}`;
+  }
 
-  newListItem.append(newHeading, newId);
+  const newImage = document.createElement("img");
+  newImage.src = player.imageUrl;
+  newImage.style = "max-width: 450px; max-height: 300px";
+
+  const backToAllPlayers = document.createElement("button");
+  backToAllPlayers.textContent = "Back To All Players";
+  backToAllPlayers.addEventListener("click", () => {
+    init();
+  });
+
+  // Got it to work without using renderAllPlayers, come back to it ^
+
+  newListItem.append(newHeading, newId, newImage, backToAllPlayers);
 
   playerDisplay.append(newListItem);
 };
-// try {
-//   const response = await fetch(`${API_URL}/players/${player}`);
-//   const result = await response.json();
-//   console.log(result.data.player);
-// } catch (err) {
-//   console.error(err);
-// } original attempt for renderSinglePlayer that used an API call
+
 /**
  * Fills in `<form id="new-player-form">` with the appropriate inputs and a submit button.
  * When the form is submitted, it should call `addNewPlayer`, fetch all players,
  * and then render all players to the DOM.
  */
 const renderNewPlayerForm = () => {
+  const form = document.querySelector("#new-player-form");
   try {
-    // TODO
+    form.innerHTML = "";
+    const nameLabel = document.createElement("label");
+    const nameInput = document.createElement("input");
+    const breedLabel = document.createElement("label");
+    const breedInput = document.createElement("input");
+    const fieldLabel = document.createElement("label");
+    const fieldCheckbox = document.createElement("input");
+    const imageUrlLabel = document.createElement("label");
+    const imageUrlInput = document.createElement("input");
+    const addButton = document.createElement("button");
+
+    // Set attributes and properties
+    nameInput.type = "text";
+    nameInput.name = "title";
+    nameInput.placeholder = "Puppy Name";
+
+    breedInput.type = "text";
+    breedInput.name = "breed";
+    breedInput.placeholder = "Puppy Breed";
+
+    fieldCheckbox.type = "checkbox";
+    fieldCheckbox.id = "field";
+    fieldCheckbox.name = "field";
+    fieldCheckbox.value = "field";
+
+    imageUrlInput.type = "url";
+    imageUrlInput.name = "imageUrl";
+    imageUrlInput.id = "imageUrl";
+    imageUrlInput.placeholder = "Image URL";
+
+    addButton.textContent = "Add Puppy";
+
+    // Append child elements
+    nameLabel.textContent = "Puppy Name";
+    nameLabel.appendChild(nameInput);
+
+    breedLabel.textContent = "Puppy Breed";
+    breedLabel.appendChild(breedInput);
+
+    fieldLabel.textContent = "Is Your Puppy on the Field?";
+    fieldLabel.appendChild(fieldCheckbox);
+
+    imageUrlLabel.textContent = "Puppy Image";
+    imageUrlLabel.appendChild(imageUrlInput);
+
+    // Append to the form
+    form.appendChild(nameLabel);
+    form.appendChild(breedLabel);
+    form.appendChild(fieldLabel);
+    form.appendChild(imageUrlLabel);
+    form.appendChild(addButton);
   } catch (err) {
     console.error("Uh oh, trouble rendering the new player form!", err);
   }
