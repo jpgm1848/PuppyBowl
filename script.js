@@ -125,7 +125,7 @@ const renderAllPlayers = (playerList) => {
   } else {
     playerDisplay.replaceChildren();
     playerList.forEach((playerObj) => {
-      const newListItem = document.createElement("li");
+      const newListItem = document.createElement("div");
       newListItem.classList.add("player");
 
       const newHeading = document.createElement("h2");
@@ -141,9 +141,12 @@ const renderAllPlayers = (playerList) => {
         newTeam.textContent = `Player team is ${playerObj.teamId}`;
       }
 
+      const newField = document.createElement("p");
+      newField.textContent = `Player is on the ${playerObj.status}.`;
+
       const newImage = document.createElement("img");
       newImage.src = playerObj.imageUrl;
-      newImage.style = "max-width: 450px; max-height: 300px";
+      // newImage.style = "max-width: 450px; max-height: 300px";
 
       const seeDetailsButton = document.createElement("button");
       seeDetailsButton.textContent = "See Details";
@@ -161,6 +164,7 @@ const renderAllPlayers = (playerList) => {
         newHeading,
         newId,
         newTeam,
+        newField,
         newImage,
         seeDetailsButton,
         removeFromRosterButton
@@ -192,7 +196,7 @@ const renderSinglePlayer = (player) => {
 
   playerDisplay.replaceChildren();
 
-  const newListItem = document.createElement("li");
+  const newListItem = document.createElement("div");
   newListItem.classList.add("player");
 
   const newHeading = document.createElement("h2");
@@ -205,9 +209,12 @@ const renderSinglePlayer = (player) => {
     newId.textContent = `Player team is ${player.teamId}`;
   }
 
+  const newStatus = document.createElement("p");
+  newStatus.textContent = `Player is on the ${player.status}.`;
+
   const newImage = document.createElement("img");
   newImage.src = player.imageUrl;
-  newImage.style = "max-width: 450px; max-height: 300px";
+  // newImage.style = "max-width: 450px; max-height: 300px";
 
   const backToAllPlayers = document.createElement("button");
   backToAllPlayers.textContent = "Back To All Players";
@@ -217,7 +224,7 @@ const renderSinglePlayer = (player) => {
 
   // Got it to work without using renderAllPlayers, come back to it ^
 
-  newListItem.append(newHeading, newId, newImage, backToAllPlayers);
+  newListItem.append(newHeading, newId, newStatus, newImage, backToAllPlayers);
 
   playerDisplay.append(newListItem);
 };
@@ -231,6 +238,8 @@ const renderNewPlayerForm = () => {
   const form = document.querySelector("#new-player-form");
   try {
     form.innerHTML = "";
+    const header = document.createElement("h1");
+    const headerLink = document.createElement("a");
     const nameLabel = document.createElement("label");
     const nameInput = document.createElement("input");
     const breedLabel = document.createElement("label");
@@ -241,7 +250,13 @@ const renderNewPlayerForm = () => {
     const imageUrlInput = document.createElement("input");
     const addButton = document.createElement("button");
 
-    // Set attributes and properties
+    headerLink.href = "index.html";
+    headerLink.textContent = "Welcome to the Puppy Bowl!";
+    headerLink.style.textDecoration = "none";
+    headerLink.style.cursor = "pointer"; // Add this line to change the cursor to a pointer on hover
+    header.appendChild(headerLink);
+    header.style.textAlign = "center";
+
     nameInput.type = "text";
     nameInput.name = "title";
     nameInput.placeholder = "Puppy Name";
@@ -262,20 +277,26 @@ const renderNewPlayerForm = () => {
 
     addButton.textContent = "Add Puppy";
 
-    // Append child elements
-    nameLabel.textContent = "Puppy Name";
+    nameLabel.classList.add("form-element");
+    breedLabel.classList.add("form-element");
+    fieldCheckbox.classList.add("form-element");
+    fieldLabel.classList.add("form-element");
+    imageUrlLabel.classList.add("form-element");
+
+    nameLabel.textContent = "Puppy Name: ";
     nameLabel.appendChild(nameInput);
 
-    breedLabel.textContent = "Puppy Breed";
+    breedLabel.textContent = "Puppy Breed: ";
     breedLabel.appendChild(breedInput);
 
-    fieldLabel.textContent = "Is Your Puppy on the Field?";
+    fieldLabel.textContent = "Is Your Puppy on the Field? ";
     fieldLabel.appendChild(fieldCheckbox);
 
-    imageUrlLabel.textContent = "Puppy Image";
+    imageUrlLabel.textContent = "Puppy Image: ";
     imageUrlLabel.appendChild(imageUrlInput);
 
     // Append to the form
+    form.appendChild(header);
     form.appendChild(nameLabel);
     form.appendChild(breedLabel);
     form.appendChild(fieldLabel);
