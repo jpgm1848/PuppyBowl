@@ -131,18 +131,21 @@ const renderAllPlayers = (playerList) => {
       const newHeading = document.createElement("h2");
       newHeading.textContent = playerObj.name;
 
+      const newBreed = document.createElement("p");
+      newBreed.textContent = `${playerObj.name}'s breed is ${playerObj.breed}.`;
+
       const newId = document.createElement("p");
-      newId.textContent = `Player ID is ${playerObj.id}`;
+      newId.textContent = `${playerObj.name}'s ID is ${playerObj.id}.`;
 
       const newTeam = document.createElement("p");
       if (playerObj.teamId === null) {
-        newTeam.textContent = `Player team is unknown.`;
+        newTeam.textContent = `${playerObj.name}'s team is unknown.`;
       } else {
-        newTeam.textContent = `Player team is ${playerObj.teamId}`;
+        newTeam.textContent = `${playerObj.name}'s team is ${playerObj.teamId}.`;
       }
 
       const newField = document.createElement("p");
-      newField.textContent = `Player is on the ${playerObj.status}.`;
+      newField.textContent = `${playerObj.name} is on the ${playerObj.status}.`;
 
       const newImage = document.createElement("img");
       newImage.src = playerObj.imageUrl;
@@ -162,6 +165,7 @@ const renderAllPlayers = (playerList) => {
 
       newListItem.append(
         newHeading,
+        newBreed,
         newId,
         newTeam,
         newField,
@@ -202,15 +206,18 @@ const renderSinglePlayer = (player) => {
   const newHeading = document.createElement("h2");
   newHeading.textContent = player.name;
 
+  const newBreed = document.createElement("p");
+  newBreed.textContent = `${player.name}'s breed is ${player.breed}.`;
+
   const newId = document.createElement("p");
   if (player.teamId === null) {
-    newId.textContent = `Player team is unknown.`;
+    newId.textContent = `${player.name}'s team is unknown.`;
   } else {
-    newId.textContent = `Player team is ${player.teamId}`;
+    newId.textContent = `${player.name}'s team is ${player.teamId}`;
   }
 
   const newStatus = document.createElement("p");
-  newStatus.textContent = `Player is on the ${player.status}.`;
+  newStatus.textContent = `${player.name} is on the ${player.status}.`;
 
   const newImage = document.createElement("img");
   newImage.src = player.imageUrl;
@@ -224,7 +231,14 @@ const renderSinglePlayer = (player) => {
 
   // Got it to work without using renderAllPlayers, come back to it ^
 
-  newListItem.append(newHeading, newId, newStatus, newImage, backToAllPlayers);
+  newListItem.append(
+    newHeading,
+    newBreed,
+    newId,
+    newStatus,
+    newImage,
+    backToAllPlayers
+  );
 
   playerDisplay.append(newListItem);
 };
