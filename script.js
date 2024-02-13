@@ -257,6 +257,8 @@ const renderNewPlayerForm = () => {
     const nameLabel = document.createElement("label");
     const nameInput = document.createElement("input");
     const breedLabel = document.createElement("label");
+    const teamLabel = document.createElement("label");
+    const teamInput = document.createElement("input");
     const breedInput = document.createElement("input");
     const fieldLabel = document.createElement("label");
     const fieldCheckbox = document.createElement("input");
@@ -279,6 +281,12 @@ const renderNewPlayerForm = () => {
     breedInput.name = "breed";
     breedInput.placeholder = "Puppy Breed";
 
+    teamInput.type = "number";
+    teamInput.name = "team";
+    teamInput.placeholder = "Puppy Team";
+    teamInput.min = 1;
+    teamInput.max = 2;
+
     fieldCheckbox.type = "checkbox";
     fieldCheckbox.id = "field";
     fieldCheckbox.name = "field";
@@ -293,6 +301,7 @@ const renderNewPlayerForm = () => {
 
     nameLabel.classList.add("form-element");
     breedLabel.classList.add("form-element");
+    teamLabel.classList.add("form-element");
     fieldCheckbox.classList.add("form-element");
     fieldLabel.classList.add("form-element");
     imageUrlLabel.classList.add("form-element");
@@ -302,6 +311,9 @@ const renderNewPlayerForm = () => {
 
     breedLabel.textContent = "Puppy Breed: ";
     breedLabel.appendChild(breedInput);
+
+    teamLabel.textContent = "Puppy Team: (Choose 1 or 2) ";
+    teamLabel.appendChild(teamInput);
 
     fieldLabel.textContent = "Is Your Puppy on the Field? ";
     fieldLabel.appendChild(fieldCheckbox);
@@ -313,6 +325,7 @@ const renderNewPlayerForm = () => {
     form.appendChild(header);
     form.appendChild(nameLabel);
     form.appendChild(breedLabel);
+    form.appendChild(teamLabel);
     form.appendChild(fieldLabel);
     form.appendChild(imageUrlLabel);
     form.appendChild(addButton);
