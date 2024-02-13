@@ -49,13 +49,18 @@ const fetchSinglePlayer = async (playerId) => {
 const addNewPlayer = async (playerObj) => {
   console.log("I am adding");
   playerObj.preventDefault();
+  // console.log(addPlayerForm.teamId.value;)
 
   const name = addPlayerForm.title.value;
+
   const breed = addPlayerForm.breed.value;
+
   let field = addPlayerForm.field.checked; //boolean
-  // let teamId = addPlayerForm.teamId.value;
+
+  let teamId = document.getElementById("teamId").value;
+
   const imageUrl = addPlayerForm.imageUrl.value;
-  // console.log(teamId);
+
   if (field) {
     field = "field";
   } else {
@@ -66,7 +71,7 @@ const addNewPlayer = async (playerObj) => {
     const response = await fetch(API_URL + "/players", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, breed, field, imageUrl }),
+      body: JSON.stringify({ name, breed, field, imageUrl, teamId }),
     });
     const json = await response.json();
     init();
@@ -282,6 +287,7 @@ const renderNewPlayerForm = () => {
     breedInput.placeholder = "Puppy Breed";
 
     teamInput.type = "number";
+    teamInput.id = "teamId";
     teamInput.name = "team";
     teamInput.placeholder = "Puppy Team";
     teamInput.min = 1;
